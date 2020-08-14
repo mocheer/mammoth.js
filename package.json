@@ -1,6 +1,6 @@
 {
   "name": "@mocheer/mammoth",
-  "version": "1.5.11",
+  "version": "1.5.14",
   "author": "mocheer <mocheer@foxmail.com>",
   "description": "Convert Word documents from docx to simple HTML and Markdown",
   "keywords": [
