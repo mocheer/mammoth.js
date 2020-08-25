@@ -565,6 +565,29 @@ test("run has font read from properties", function() {
     assert.deepEqual(run.font, "Arial");
 });
 
+test("run has null fontSize by default", function() {
+    var runXml = runWithProperties([]);
+
+    var run = readXmlElementValue(runXml);
+    assert.deepEqual(run.fontSize, null);
+});
+
+test("run has fontSize read from properties", function() {
+    var fontSizeXml = new XmlElement("w:sz", {"w:val": "28"});
+    var runXml = runWithProperties([fontSizeXml]);
+
+    var run = readXmlElementValue(runXml);
+    assert.deepEqual(run.fontSize, 14);
+});
+
+test("run with invalid w:sz has null font size", function() {
+    var fontSizeXml = new XmlElement("w:sz", {"w:val": "28a"});
+    var runXml = runWithProperties([fontSizeXml]);
+
+    var run = readXmlElementValue(runXml);
+    assert.deepEqual(run.fontSize, null);
+});
+
 test("run properties not included as child of run", function() {
     var runStyleXml = new XmlElement("w:rStyle");
     var runPropertiesXml = new XmlElement("w:rPr", {}, [runStyleXml]);
@@ -583,6 +606,12 @@ test("w:noBreakHyphen is read as non-breaking hyphen character", function() {
     var noBreakHyphenXml = new XmlElement("w:noBreakHyphen");
     var result = readXmlElement(noBreakHyphenXml);
     assert.deepEqual(result.value, new documents.Text("\u2011"));
+});
+
+test("soft hyphens are read as text", function() {
+    var element = new XmlElement("w:softHyphen", {}, []);
+    var text = readXmlElementValue(element);
+    assert.deepEqual(text, new documents.Text("\u00AD"));
 });
 
 test("w:tbl is read as document table element", function() {
